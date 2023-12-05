@@ -16,7 +16,7 @@ public class Main {
         bottiglione = keyBoard.nextInt();
         System.out.println("Hai acquistato " + bottiglione + "bottiglione/i" );
 
-        System.out.println("Quale tipo di vino vuoi acquistare? 1 barbera, 2 lugana, 3 merlot" + scelta);
+        System.out.println("Quale tipo di vino vuoi acquistare? 1 barbera, 2 lugana, 3 merlot");
         scelta = keyBoard.nextInt();
         if(scelta==1){
 
@@ -63,7 +63,8 @@ public class Main {
             System.out.println("Scelta non valida");
         }
 
-
+}
+    }
     }
 
 }
