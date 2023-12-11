@@ -12,9 +12,9 @@ public class Main
 	    System.out.println("Inserisci l'esponente");
 	    c = keyBoard.nextInt();
 	    
-	    f=a*a;
+	    f=a;
 	    
-	    for(int i=1;i<c-1;i++ ){
+	    for(int i=1;i<c;i++ ){
 	        f=f*a
 	    }
 	    System.out.println("" + f);
