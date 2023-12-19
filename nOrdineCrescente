@@ -1,0 +1,50 @@
+import java.util.Scanner;
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        Scanner tastiera = new Scanner(System.in);
+        int a,b,c;
+        System.out.println("Inserisci il primo numero: ");
+        a = tastiera.nextInt();
+        System.out.print("Inserisci il secondo numero: ");
+        b = tastiera.nextInt();
+        System.out.print("Inserisci il terzo numero: ");
+         c = tastiera.nextInt();
+        
+        if (a <=b && a <= c) 
+        {
+            if (b <= c) 
+            {
+               
+               System.out.println("Numeri in ordine crescente: " + a + ", " + b + ", " + c);
+            } else 
+            {
+                
+               System.out.println("Numeri in ordine crescente: " + a + ", " + b + ", " + c);
+            }
+        } else if (b <= a && b <= c) 
+        {
+            if (a <= c)
+            {
+                
+                System.out.println("Numeri in ordine crescente: " + a + ", " + b + ", " + c);
+            } else 
+            {
+                
+                System.out.println("Numeri in ordine crescente: " + a + ", " + b + ", " + c);
+            }
+        } else {
+            if (a <= b) {
+               
+                System.out.println("Numeri in ordine crescente: " +a + ", " + b + ", " + c);
+            } else {
+                
+                System.out.println("Numeri in ordine crescente: " + a + ", " + b + ", " + c);
+            }
+        }
+    }
+
+     
+}
