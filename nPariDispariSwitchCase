@@ -1,0 +1,24 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner tastiera = new Scanner(System.in);
+        int numero;
+
+        System.out.print("Inserisci un numero: ");
+        numero = tastiera.nextInt();
+
+        switch (numero % 2) {
+            case 0:
+                System.out.println("Il numero è pari.");
+                break;
+            case 1:
+                System.out.println("Il numero è dispari.");
+                break;
+            default:
+                System.out.println("Numero non valido.");
+                break;
+        }
+
+    }
+}
