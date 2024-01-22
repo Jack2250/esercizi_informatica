@@ -3,7 +3,6 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-
         Scanner tastiera = new Scanner(System.in);
         int opzioni, quantiNumeri = 0, nPari, posizione = 0;
         boolean fine = true;
@@ -15,8 +14,8 @@ public class Main {
             menu();
             System.out.println("seleziona un'opzione");
             opzioni = tastiera.nextInt();
-            switch (opzioni) {
 
+            switch (opzioni) {
                 case 1:
                     System.out.println(" quanti numeri vuoi generare?");
                     quantiNumeri = tastiera.nextInt();
@@ -26,25 +25,29 @@ public class Main {
                     System.out.println("visualizza numeri");
                     if (vetNumeri != null)
                         visualizza(vetNumeri);
-                    else System.out.println("non è stato creato il vettore");
+                    else
+                        System.out.println("non è stato creato il vettore");
                     break;
                 case 3:
                     System.out.println(" numeri pari");
                     if (vetNumeri != null) {
                         vetPari = new int[quantiNumeri];
+                        posizione = 0;
+
                         for (int i = 0; i < quantiNumeri; i++) {
                             if (vetNumeri[i] % 2 == 0) {
                                 vetPari[posizione] = vetNumeri[i];
                                 posizione = posizione + 1;
                             }
-
                         }
-                    } else System.out.println("non è stato creato il vettore");
+                    } else
+                        System.out.println("non è stato creato il vettore");
                     break;
                 case 4:
                     if (vetPari != null)
                         visualizza(vetPari);
-                    else System.out.println("non è stato creato il vettore");
+                    else
+                        System.out.println("non è stato creato il vettore");
                     break;
                 case 5:
                     System.out.println(" exit");
@@ -56,8 +59,6 @@ public class Main {
             Wait(2000);
 
         } while (fine);
-
-
     }
 
     private static void menu() {
@@ -86,11 +87,17 @@ public class Main {
     }
 
     private static int[] numeriCasuali(int n) {
-        int casuale;
         int[] vettore = new int[n];
         Random rn = new Random();
+        boolean[] numeriGenerati = new boolean[101];
+
         for (int i = 0; i < n; i++) {
-            casuale = rn.nextInt(1, 101);
+            int casuale;
+            do {
+                casuale = rn.nextInt(101);
+            } while (numeriGenerati[casuale]);
+            
+            numeriGenerati[casuale] = true;
             vettore[i] = casuale;
         }
         return vettore;
@@ -100,6 +107,5 @@ public class Main {
         for (int i = 0; i < v.length; i++) {
             System.out.println(i + "=" + v[i]);
         }
-
     }
 }
