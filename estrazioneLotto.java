@@ -2,86 +2,49 @@ import java.util.Scanner;
 import java.util.Random;
 
 public class Main {
+    private static int[] numeriEstratti = new int[5];
+
     public static void main(String[] args) {
-        String[] opzioni = {"Estrazioni lotto", "[1] Ruota venezia", "[2] visualizza", "[3] exit"};
-        Scanner tastiera = new Scanner(System.in);
-        boolean fine = true;
-
+        String[] opzioni = {"Estrazioni lotto", "[1] Ruota Venezia", "[2] Visualizza", "[3] Exit"};
+        Scanner kyb = new Scanner(System.in);
+        
+        int scelta;
         do {
-            switch (menu(opzioni, tastiera)) {
+            scelta = mnu(opzioni, kyb);
+            
+            switch (scelta) {
                 case 1:
-                    System.out.println("opzione 1");
-                    int n, casuale;
-                    Scanner scanner = new Scanner(System.in);
-                    Random random = new Random();
-                    System.out.println("Quanti numeri casuali vuoi generare?");
-                    n = scanner.nextInt();
-
-                    int[] vettore = caricaVettore(n);
-                    for (int i = 0; i < vettore.length; i++) {
-                        System.out.println(vettore[i]);
-                    }
+                    estraiNumeriVenezia();
                     break;
                 case 2:
-                    System.out.println("opzione 2");
-
-
+                    visualizzaNumeriEstratti();
                     break;
                 case 3:
-                    System.out.println("exit");
-                    fine = false;
+                    System.out.println("Exit");
                     break;
                 default:
-                    System.out.println("opzione errata");
-                    fine = false;
-                    break;
-
+                    System.out.println("Scelta errata");
             }
-            Wait();
-
-        } while (fine);
-
+        } while (scelta != 3);
+        
     }
 
-    private static int menu(String[] opzioni, Scanner kyb) {
+    private static int mnu(String[] opzioni, Scanner kyb) {
         int scelta;
         do {
             ClrScr();
-
-            System.out.println("----" + opzioni[0] + "----");
+            System.out.println("-----" + opzioni[0] + "-----");
             for (int i = 1; i < opzioni.length; i++) {
                 System.out.println(opzioni[i]);
-
             }
-            System.out.println("------------");
+            System.out.println("----------------");
             scelta = kyb.nextInt();
-            if (!(scelta >= 1 && scelta <= opzioni.length)) {
+            if (!(scelta >= 1 && scelta < opzioni.length)) {
                 System.out.println("Scelta errata");
-                Wait();
-
+                Wait(2000);
             }
-            Wait();
-
-        } while (!(scelta >= 1 && scelta <= opzioni.length));
-        
+        } while (!(scelta >= 1 && scelta < opzioni.length));
         return scelta;
-    }
-
-    public static int[] caricaVettore(int n) {
-        Random random = new Random();
-        int casuale;
-        int[] vettore = new int[n];
-        for (int i = 0; i < n; i++) {
-            casuale = random.nextInt(1, 90);
-            vettore[i] = casuale;
-        }
-        return vettore;
-    }
-
-    private static void visualizza(int[] v) {
-        for (int i = 0; i < v.length; i++) {
-            System.out.println(i + "=" + v[i]);
-        }
     }
 
     private static void ClrScr() {
@@ -92,11 +55,29 @@ public class Main {
         }
     }
 
-    private static void Wait() {
+    private static void Wait(int attesa) {
         try {
-            Thread.sleep(2000);
+            Thread.sleep(attesa);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void estraiNumeriVenezia() {
+        Random rand = new Random();
+        System.out.println("Numeri estratti per la Ruota di Venezia:");
+        for (int i = 0; i < 5; i++) {
+            numeriEstratti[i] = rand.nextInt(90) + 1; 
+            System.out.print(numeriEstratti[i] + " ");
+        }
+        System.out.println();
+    }
+
+    private static void visualizzaNumeriEstratti() {
+        System.out.println("Numeri estratti precedentemente:");
+        for (int i = 0; i < numeriEstratti.length; i++) {
+            System.out.print(numeriEstratti[i] + " ");
+        }
+        System.out.println();
     }
 }
