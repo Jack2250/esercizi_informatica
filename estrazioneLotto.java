@@ -7,11 +7,11 @@ public class Main {
     public static void main(String[] args) {
         String[] opzioni = {"Estrazioni lotto", "[1] Ruota Venezia", "[2] Visualizza", "[3] Exit"};
         Scanner kyb = new Scanner(System.in);
-        
+
         int scelta;
         do {
             scelta = mnu(opzioni, kyb);
-            
+
             switch (scelta) {
                 case 1:
                     estraiNumeriVenezia();
@@ -26,7 +26,7 @@ public class Main {
                     System.out.println("Scelta errata");
             }
         } while (scelta != 3);
-        
+
     }
 
     private static int mnu(String[] opzioni, Scanner kyb) {
@@ -65,10 +65,8 @@ public class Main {
 
     private static void estraiNumeriVenezia() {
         Random rand = new Random();
-        System.out.println("Numeri estratti per la Ruota di Venezia:");
         for (int i = 0; i < 5; i++) {
-            numeriEstratti[i] = rand.nextInt(90) + 1; 
-            System.out.print(numeriEstratti[i] + " ");
+            numeriEstratti[i] = rand.nextInt(90) + 1;
         }
         System.out.println();
     }
