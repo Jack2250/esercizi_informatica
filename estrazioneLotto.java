@@ -2,11 +2,14 @@ import java.util.Scanner;
 import java.util.Random;
 
 public class Main {
-    private static int[] numeriEstratti = new int[5];
+    private static final int[] numeriEstratti = new int[5];
 
     public static void main(String[] args) {
-        String[] opzioni = {"Estrazioni lotto", "[1] Ruota Venezia", "[2] Visualizza", "[3] Exit"};
+        String[] opzioni = {"Estrazioni lotto", "[1] Ruota Venezia", "[2] Visualizza ruota Venezia", "[3] 5 numeri giocati dall'utente senza ripetizioni", "[4] Verifica vincita", "[5] Exit"};
         Scanner kyb = new Scanner(System.in);
+        Scanner tastiera = new Scanner(System.in);
+        int numeri;
+        int[] vetNumeri = new int[0];
 
         int scelta;
         do {
@@ -20,12 +23,42 @@ public class Main {
                     visualizzaNumeriEstratti();
                     break;
                 case 3:
+                    System.out.println("Inserisci il " + 1 + " numero");
+                    numeri = tastiera.nextInt();
+                    vetNumeri[1] = numeri;
+                    System.out.println("Inserisci il " + 2 + " numero");
+                    numeri = tastiera.nextInt();
+                    vetNumeri[2] = numeri;
+                    System.out.println("Inserisci il " + 3 + " numero");
+                    numeri = tastiera.nextInt();
+                    vetNumeri[3] = numeri;
+                    System.out.println("Inserisci il " + 4 + " numero");
+                    numeri = tastiera.nextInt();
+                    vetNumeri[4] = numeri;
+                    System.out.println("Inserisci il " + 5 + " numero");
+                    numeri = tastiera.nextInt();
+                    vetNumeri[5] = numeri;
+
+                    break;
+
+                case 4:
+                    for (int i = 0; i < 5; i++) {
+                        for (int j = 0; j < 5; j++) {
+                            i = numeriEstratti[i];
+                            j = vetNumeri[i];
+                            if (i == j) {
+                                System.out.println("ambo");
+                            }
+
+                        }
+                    }
+                case 5:
                     System.out.println("Exit");
                     break;
                 default:
                     System.out.println("Scelta errata");
             }
-        } while (scelta != 3);
+        } while (scelta != 5);
 
     }
 
@@ -41,7 +74,7 @@ public class Main {
             scelta = kyb.nextInt();
             if (!(scelta >= 1 && scelta < opzioni.length)) {
                 System.out.println("Scelta errata");
-                Wait(2000);
+                Wait();
             }
         } while (!(scelta >= 1 && scelta < opzioni.length));
         return scelta;
@@ -55,9 +88,9 @@ public class Main {
         }
     }
 
-    private static void Wait(int attesa) {
+    private static void Wait() {
         try {
-            Thread.sleep(attesa);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -78,4 +111,11 @@ public class Main {
         }
         System.out.println();
     }
+
+    private static void visualizza(int[] v) {
+        for (int i = 0; i < v.length; i++) {
+            System.out.println(i + "=" + v[i]);
+        }
+    }
+
 }
