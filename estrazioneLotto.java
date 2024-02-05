@@ -22,36 +22,60 @@ public class Main {
                 case 2:
                     visualizzaNumeriEstratti();
                     break;
+
                 case 3:
-                    System.out.println("Inserisci il " + 1 + " numero");
-                    numeri = tastiera.nextInt();
-                    vetNumeri[1] = numeri;
-                    System.out.println("Inserisci il " + 2 + " numero");
-                    numeri = tastiera.nextInt();
-                    vetNumeri[2] = numeri;
-                    System.out.println("Inserisci il " + 3 + " numero");
-                    numeri = tastiera.nextInt();
-                    vetNumeri[3] = numeri;
-                    System.out.println("Inserisci il " + 4 + " numero");
-                    numeri = tastiera.nextInt();
-                    vetNumeri[4] = numeri;
-                    System.out.println("Inserisci il " + 5 + " numero");
-                    numeri = tastiera.nextInt();
-                    vetNumeri[5] = numeri;
+                    System.out.println("Inserisci i 5 numeri senza ripetizioni:");
+                    vetNumeri = new int[5]; // Re-inizializza l'array per contenere 5 numeri
+                    for (int i = 0; i < 5; i++) {
+                        System.out.println("Inserisci il " + (i + 1) + "° numero:");
+                        numeri = tastiera.nextInt();
+                        // Verifica se il numero è già stato inserito
+                        boolean numeroGiaInserito = false;
+                        for (int j = 0; j < i; j++) {
+                            if (vetNumeri[j] == numeri) {
+                                numeroGiaInserito = true;
+                                break;
+                            }
+                        }
+                        if (numeroGiaInserito) {
+                            System.out.println("Numero già inserito, inserisci un numero diverso.");
+                            i--; // Decrementa l'indice per far ripetere l'iterazione
+                        } else {
+                            vetNumeri[i] = numeri;
+                        }
+                    }
 
                     break;
 
                 case 4:
-                    for (int i = 0; i < 5; i++) {
-                        for (int j = 0; j < 5; j++) {
-                            i = numeriEstratti[i];
-                            j = vetNumeri[i];
-                            if (i == j) {
-                                System.out.println("ambo");
+                    int numeriIndovinati = 0;
+                    for (int numeroGiocatore : vetNumeri) {
+                        for (int numeroEstratto : numeriEstratti) {
+                            if (numeroGiocatore == numeroEstratto) {
+                                numeriIndovinati++;
                             }
-
                         }
                     }
+                    switch (numeriIndovinati) {
+                        case 1:
+                            System.out.println("Ambata");
+                            break;
+                        case 2:
+                            System.out.println("Ambo");
+                            break;
+                        case 3:
+                            System.out.println("Terno");
+                            break;
+                        case 4:
+                            System.out.println("Quaterna");
+                            break;
+                        case 5:
+                            System.out.println("Cinquina");
+                            break;
+                        default:
+                            System.out.println("Nessun numero indovinato");
+                    }
+                    break;
                 case 5:
                     System.out.println("Exit");
                     break;
@@ -117,5 +141,6 @@ public class Main {
             System.out.println(i + "=" + v[i]);
         }
     }
+
 
 }
