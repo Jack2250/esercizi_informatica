@@ -1,79 +1,171 @@
 import java.util.Scanner;
 
 public class Main {
-
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        boolean continua = true;
+        Scanner tastiera = new Scanner(System.in);
+        int data;
+        int[] dataGGMMAAAA;
+        boolean dataError = false;
+        do {
+            System.out.println("Inserisci la data in GGMMAAAA o GMMAAAA");
+            data = tastiera.nextInt();
+            dataError = validataShort(data);
+            if (!dataError)
+                System.out.println("Formato data errato");
+        } while (!dataError);
+        System.out.println("Data corretta");
 
-        while (continua) {
-            System.out.print("Inserisci la data nel formato ggmmaaaa: ");
-            int data = scanner.nextInt();
-            
-            int giorno = data / 1000000; // Estrae i primi due cifre come giorno
-            int mese = (data / 10000) % 100; // Estrae il mese 
-            int anno = data % 10000; // Estrae l'anno
-            
-            boolean dataValida = verificaData(giorno, mese, anno);
-            
-            if (dataValida) {
-                System.out.println("Data inserita corretta:");
-                System.out.println("Giorno: " + giorno);
-                System.out.println("Mese: " + convertiMeseStringa(mese));
-                System.out.println("Anno: " + anno);
-            } else {
-                System.out.println("Data inserita non valida. Riprova.");
+        dataGGMMAAAA = elementiData(data);
+        System.out.println(dataGGMMAAAA[0]);
+        System.out.println(dataGGMMAAAA[1]);
+        System.out.println(dataGGMMAAAA[2]);
+
+        System.out.println(dataString(dataGGMMAAAA));
+
+        // Menù per aggiungere o togliere giorni
+        int scelta;
+        do {
+            System.out.println("\nMenù:");
+            System.out.println("1. Aggiungi giorni");
+            System.out.println("2. Togli giorni");
+            System.out.println("0. Esci");
+            System.out.print("Scelta: ");
+            scelta = tastiera.nextInt();
+
+            switch (scelta) {
+                case 1:
+                    System.out.print("Inserisci il numero di giorni da aggiungere: ");
+                    int giorniAggiunti = tastiera.nextInt();
+                    dataGGMMAAAA = data_up(dataGGMMAAAA, giorniAggiunti);
+                    System.out.println("Nuova data: " + dataString(dataGGMMAAAA));
+                    break;
+                case 2:
+                    System.out.print("Inserisci il numero di giorni da togliere: ");
+                    int giorniTolti = tastiera.nextInt();
+                    dataGGMMAAAA = data_down(dataGGMMAAAA, giorniTolte);
+                    System.out.println("Nuova data: " + dataString(dataGGMMAAAA));
+                    break;
+                case 0:
+                    System.out.println("Uscita dal programma.");
+                    break;
+                default:
+                    System.out.println("Scelta non valida.");
+                    break;
             }
-            
-            System.out.print("Vuoi inserire un'altra data? (sì/no): ");
-            String risposta = scanner.next();
+        } while (scelta != 0);
+    }
+
+    public static boolean validaData(int data) {
+        int lunghezza = 0;
+        do {
+            data = data / 10;
+            lunghezza++;
+        } while (data > 0);
+        return (lunghezza == 7 || lunghezza == 8);
+    }
+
+    public static boolean validataShort(int data) {
+        return !(data < 01010001 || data < 3112999);
+    }
+
+    public static int[] elementiData(int data) {
+        int[] elementi = new int[3];
+        elementi[0] = data % 10000; //12042004
+        data = data / 10000;
+        elementi[1] = data % 100;
+        data = data / 100;
+        elementi[2] = data;
+        return elementi;
+    }
+
+    public static String dataString(int[] dataGGMMAAAA) {
+        String meseS;
+        meseS = switch (dataGGMMAAAA[1]) {
+            case 1 -> " gennaio ";
+            case 2 -> " Febbraio ";
+            case 3 -> " Marzo ";
+            case 4 -> " Aprile ";
+            case 5 -> " Maggio ";
+            case 6 -> " Giugno ";
+            case 7 -> " Luglio ";
+            case 8 -> " Agosto ";
+            case 9 -> " Settembre ";
+            case 10 -> " Ottobre ";
+            case 11 -> " Novembre ";
+            case 12 -> " Dicembre ";
+            default -> " Errato ";
+        };
+        return dataGGMMAAAA[0] + meseS + dataGGMMAAAA[2];
+    }
+
+
+    public static int giorniMese(int mese, int anno) {
+        // Restituisce il numero di giorni nel mese specificato
+        int[] giorniPerMese = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        // Aggiustamento per gli anni bisestili
+        if (mese == 2 && annoBisestile(anno)) {
+            return 29;
+        } else {
+            return giorniPerMese[mese];
+        }
+    }
+
+    public static boolean annoBisestile(int anno) {
+        // Verifica se l'anno è bisestile
+        return (anno % 4 == 0 && anno % 100 != 0) || (anno % 400 == 0);
+    }
+
+    public static int[] data_up(int[] dataGGMMAAAA, int giorni) {
+        // Calcola la nuova data aggiungendo giorni
+        int anno = dataGGMMAAAA[2];
+        int mese = dataGGMMAAAA[1];
+        int giorno = dataGGMMAAAA[0];
+
+        // Calcolo della nuova data
+        giorno += giorni;
+
+        // Controllo e aggiustamento se supera i giorni massimi del mese
+        while (giorno > giorniMese(mese, anno)) {
+            giorno -= giorniMese(mese, anno);
+            mese++;
+            if (mese > 12) {
+                mese = 1;
+                anno++;
+            }
         }
 
-        scanner.close();
-    }
+        // Aggiornamento dell'array
+        dataGGMMAAAA[0] = giorno;
+        dataGGMMAAAA[1] = mese;
+        dataGGMMAAAA[2] = anno;
 
-    // Metodo per convertire il numero del mese in una stringa
-    public static String convertiMeseStringa(int mese) {
-        String[] mesi = {"GENNAIO", "FEBBRAIO", "MARZO", "APRILE", "MAGGIO", "GIUGNO",
-                         "LUGLIO", "AGOSTO", "SETTEMBRE", "OTTOBRE", "NOVEMBRE", "DICEMBRE"};
-        return mesi[mese - 1];
+        return dataGGMMAAAA;
     }
+    
+    public static int[] data_down(int[] dataGGMMAAAA, int giorni) {
+        // Calcola la nuova data togliendo giorni
+        int anno = dataGGMMAAAA[2];
+        int mese = dataGGMMAAAA[1];
+        int giorno = dataGGMMAAAA[0];
 
-    // Metodo per verificare se una data è valida
-    private static boolean verificaData(int giorno, int mese, int anno) {
-        // Controllo se il mese è compreso tra 1 e 12
-        if (mese < 1 || mese > 12)
-            return false;
-        
-        // Controllo del numero di giorni per il mese
-        int giorniInMese = giorniInMese(mese, anno);
-        if (giorno < 1 || giorno > giorniInMese)
-            return false;
-        
-        return true;
+        // Calcolo della nuova data
+        giorno -= giorni;
+
+        // Controllo e aggiustamento se scende sotto 1
+        while (giorno < 1) {
+            mese--;
+            if (mese < 1) {
+                mese = 12;
+                anno--;
+            }
+            giorno += giorniMese(mese, anno);
+        }
+
+        // Aggiornamento dell'array
+        dataGGMMAAAA[0] = giorno;
+        dataGGMMAAAA[1] = mese;
+        dataGGMMAAAA[2] = anno;
+
+        return dataGGMMAAAA;
     }
-
-    // Metodo per ottenere il numero di giorni in un mese specifico
-private static int giorniInMese(int mese, int anno) {
-    int giorni;
-    switch (mese) {
-        case 4:
-        case 6:
-        case 9:
-        case 11:
-            giorni = 30;
-            break;
-        case 2:
-            if ((anno % 4 == 0 && anno % 100 != 0) || anno % 400 == 0)
-                giorni = 29;
-            else
-                giorni = 28;
-            break;
-        default:
-            giorni = 31;
-            break;
-    }
-    return giorni;
-}
-
 }
