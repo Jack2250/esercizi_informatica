@@ -1,90 +1,133 @@
 import java.util.Scanner;
+
 import static Tools.Utility.*;
-//* = utilizza tutto quello che trovi nella classe
 
 public class Main {
     public static void main(String[] args) {
+        int contacontatti = 0;
+
         final int nContratti = 3;
+        boolean uscita = false;
         Scanner tastiera = new Scanner(System.in);
         Persona[] gestore = new Persona[nContratti];
-        String[] opzioni = {"Gestore Telefonico" , "1 - Inserimento" , "2 - Visualizza" , "3 - Fine"};
+        String[] opzioni = {"Gestore telefonico", "1-Inserimento", "2-Visualizza", "3-Ricerca","4-Modifica", "5-Fine"};
+        do {
 
-        boolean fine = false;
-
-        int contaContatti = 0;
-
-        do{
-            switch (menu(opzioni, tastiera)){
+            switch (menu(opzioni, tastiera)) {
                 case 1:
-    if (nContratti > contaContatti) {
-        Persona nuovoContatto = LeggiContatto(tastiera, gestore, contaContatti);
-        if (nuovoContatto != null) {
-            gestore[contaContatti] = nuovoContatto;
-            contaContatti++;
-        }
-    } else {
-        System.out.println("Finiti contratti");
-    }
-    break;
-                case 2:
-                    if(contaContatti>0){
-                        Visualizza(gestore, contaContatti);
+                    if (contacontatti < nContratti) {
+
+                        Persona NuovoContatto = LeggiContatto(true, tastiera);
+                        if (!Presente(gestore, NuovoContatto, contacontatti)) {
+                            gestore[contacontatti] = NuovoContatto;
+                            contacontatti++;
+                        } else {
+                            System.out.println("Il contatto è già presente nella collezione.");
+                        }
+                    } else {
+                        System.out.println("Non ci sono più contratti da vendere");
                     }
-                    else{
+                    ;
+                    break;
+                case 2:
+                    if (contacontatti > 0) {
+                        Visualizza(gestore, contacontatti);
+                    } else {
                         System.out.println("Non ci sono contatti da visualizzare");
                     }
+                    ;
                     break;
+                //devo verificare se 1 elemento e' presente all'interno
+                //quale è la condizione x verificare che un elemento è presente
                 case 3:
-                    fine = false;
+                    if (contacontatti > 0) {
+                        Persona Supporto = LeggiContatto(false, tastiera);
+                        if (Presente(gestore, Supporto, contacontatti)) {
+                            System.out.println("e' presente");
+
+                        } else {
+                            System.out.println("Non e' presente");
+                        }
+                    } else {
+                        System.out.println("Non ci sono contatti da visualizzare");
+                    }
+                    ;
                     break;
+                case 4:
+                    if(contacontatti>0){
+                        Persona Supporto = LeggiContatto(false, tastiera);
+                        int posizione=posNumero(gestore,Supporto,contacontatti);
+                        if(posNumero(gestore,Supporto,contacontatti)!=-1){
+                            System.out.println("inserisci il numero di telefono");
+                            gestore[posizione].numDiTelefono=tastiera.nextLine();
+                        }
+                    }
+                    break;
+                case 5:
+                    uscita = true;
+                    ;
+                    break;
+
             }
-        }while(!fine);
+
+        } while (!uscita);
         System.out.println("Fine programma");
     }
-    
-    public static Persona LeggiContatto (Scanner tastiera, Persona[] gestore, int contacontatti){
-    Persona contatto = new Persona();
-    int scelta = 0;
 
-    System.out.println("Inserisci il nome");
-    String nome = tastiera.nextLine();
-    System.out.println("Inserisci il cognome");
-    String cognome = tastiera.nextLine();
+    public static Persona LeggiContatto(boolean telSi, Scanner tastiera) {
+        Persona contatto = new Persona();
 
-    // Controllo se il contatto è già presente nella collezione
-    for (int i = 0; i < contacontatti; i++) {
-        if (gestore[i].nome.equals(nome) && gestore[i].cognome.equals(cognome)) {
-            System.out.println("Questo contatto è già presente nella lista.");
-            return null; // Ritorno null per indicare che il contatto non è stato aggiunto
+
+        System.out.println("Inserici il nome");
+        contatto.nome = tastiera.nextLine();
+        System.out.println("Inserici il cognome");
+        contatto.cognome = tastiera.nextLine();
+        if (telSi) {
+            System.out.println("Inserici il numero di telefono");
+            contatto.numDiTelefono = tastiera.nextLine();
+            String[] opzioni = {"TipoAbbonamento", "1-cellulare", "2-abitazione", "3-azienda"};
+            int scelta;
+            do {
+                scelta = menu(opzioni, tastiera);
+                switch (scelta) {
+                    case 1 -> contatto.tipo = Tipologia.cellulare;
+                    case 2 -> contatto.tipo = Tipologia.abitazione;
+                    case 3 -> contatto.tipo = Tipologia.azienda;
+                }
+
+            } while (scelta > 3 || scelta < 1);
+        }
+
+        return contatto;
+    }
+
+    /*
+    metodo che serve x visualizzare le persone dentro il nostro gestore
+     */
+    public static void Visualizza(Persona gestore[], int contacontatti) {
+        for (int i = 0; i < contacontatti; i++) {
+            System.out.println(gestore[i].anagrafica());
+
         }
     }
 
-    contatto.nome = nome;
-    contatto.cognome = cognome;
+    public static boolean Presente(Persona[] gestore, Persona NuovoContatto, int contacontatti) {
 
-    System.out.println("Inserisci il numero di telefono");
-    contatto.numDiTelefono = tastiera.nextLine();
-    String[] opzioni = {"Tipo di abbonamento" , "1 - cellulare" , "2 - Abitazione" , "3 - Azienda"};
+        for (int i = 0; i < contacontatti; i++) {
+            if ((gestore[i].nome.equals(NuovoContatto.nome)) && (gestore[i].cognome.equals(NuovoContatto.cognome))) {
+                return true;
+            }
 
-    do {
-        scelta = menu(opzioni, tastiera);
-        switch (scelta){
-            case 1: 
-                contatto.tipo = Tipologia.cellulare;
-                break;
-            case 2: contatto.tipo = Tipologia.abitazione;
-                break;
-            case 3: contatto.tipo = Tipologia.azienda;
-                break;
         }
-    } while (scelta > 3 || scelta < 1);
+        return false;
+    }
 
-    return contatto;
-}
-    // Metodo per visualizzare le persone dentro il nostro gestore
-    public static void Visualizza(Persona gestore[], int contacontatti){
-        for(int i = 0; i<contacontatti; i++){
-            System.out.println(gestore[i].anagrafica());
+    public static int posNumero(Persona[] gestore, Persona NuovoContatto, int contacontatti) {
+        for (int i = 0; i < contacontatti; i++) {
+            if ((gestore[i].nome.equals(NuovoContatto.nome)) && (gestore[i].cognome.equals(NuovoContatto.cognome))) {
+                return i;
+            }
         }
+        return -1;
     }
 }
