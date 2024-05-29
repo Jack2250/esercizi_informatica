@@ -1,5 +1,5 @@
 enum Tipologia {
-    cellulare, abitazione, azienda;
+    cellulare, abitazione, azienda
 }
 
 public class Persona {
@@ -7,10 +7,25 @@ public class Persona {
     public String cognome;
     public String numDiTelefono;
     public Tipologia tipo;
-    public int saldoTelefonico;
+    public int saldo;
 
-    //Metodo anagrafica mi stampa tutti i dati di quella persona
+    public Persona(String nome, String cognome, String numDiTelefono, Tipologia tipo) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.numDiTelefono = numDiTelefono;
+        this.tipo = tipo;
+    }
+
+    public Persona() {
+        this.saldo = 10;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s,%s,%s,%s", nome, cognome, numDiTelefono, tipo.toString());
+    }
+
     public String anagrafica() {
-        return String.format("Nome: %s Cognome: %s Telefono: %s Tipo: %s", nome, cognome, numDiTelefono, tipo);
+        return String.format("Nome: %s Cognome: %s Telefono: %s Tipo: %s Saldo: %d", nome, cognome, numDiTelefono, tipo, saldo);
     }
 }
